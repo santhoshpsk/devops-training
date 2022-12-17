@@ -6,8 +6,6 @@ RUN apk add --no-cache openjdk11-jre fontconfig ttf-dejavu unzip openssl bash op
 
 RUN apk add --no-cache jenkins
 
-COPY k8s-image.Dockerfile /opt/k8s-image.Dockerfile
-
 COPY jenkins-entrypoint.sh /usr/bin/jenkins-entrypoint.sh
 
 ENV DOCKER_HOST=unix:///var/run/docker.sock
