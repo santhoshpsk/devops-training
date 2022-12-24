@@ -1,0 +1,11 @@
+- name: Installing nginx
+  package:
+    name: nginx
+    state: latest
+    update_cache: yes
+
+- name: Enabling and Starting nginx
+  service:
+    name: nginx
+    state: started
+    enabled: yes
