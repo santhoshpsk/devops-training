@@ -36,4 +36,4 @@ The AMI to use in EC2 instance in different regions are taken from public SSM pa
 This cloudformation template will work in any normal regions in AWS. One should make sure few things before deploying this cfn stack:
 * Create a EC2 instance key pair with name ec2-keypair in the corresponding region.
 
-Your S3 bucket can be in any region. But you have to 
+Your S3 bucket can be in any region. But one have to S3 bucket name and region during the time of cfn stack creation.
