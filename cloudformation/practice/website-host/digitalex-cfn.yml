@@ -17,6 +17,10 @@ Parameters:
       - production
   S3BucketName:
     Type: String
+  S3BucketRegion:
+    Type: String
+    MinLength: "1"
+    Default: ap-south-1
   WebsiteToHost:
     Type: String
     Default: digitalex
