@@ -1,0 +1,43 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: 'Parameters check'
+Parameters:
+  S3BucketName:
+    Type: String
+    Default: ''
+  S3AccessControl:
+    Type: String
+    AllowedValues:
+      - PublicRead
+      - PublicReadWrite
+    Default: PublicRead
+  Ec2ImageId:
+    Type: AWS::SSM::Parameter::Value<AWS::EC2::Image::Id>
+    Default: /aws/service/ami-amazon-linux-latest/al2022-ami-kernel-5.15-x86_64
+  Env:
+    Type: String
+    Default: dev
+    AllowedValues:
+      - dev
+      - prod
+
+Rules:
+  EnsureProdS3WriteDeny:
+    RuleCondition: !Equals [!Ref Env, prod]
+    Assertions:
+      - Assert: !Not !Equals [!Ref S3AccessControl, PublicReadWrite]
+
+Resources:
+  MyS3Bucket:
+    Type: AWS::S3::Bucket
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      BucketName: !Ref S3BucketName
+      AccessControl: !Ref S3AccessControl
+  MyEc2Instance:
+    Type: AWS::EC2::Instance
+    Properties:
+      ImageId: !Ref Ec2ImageId
+      InstanceType: t2.micro
+    DependsOn:
+      - MyS3Bucket
