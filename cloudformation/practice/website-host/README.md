@@ -1,10 +1,10 @@
 The cloudformation template is to host website in EC2 instances.
 I have four websites. Those are following.
 
-1. DigitalEx
-2. Foste
-3. Convid
-4. Diffuso
+1. DigitalEx (digitalex.zip)
+2. Foste (foste.zip)
+3. Convid (convid.zip)
+4. Diffuso (diffuso.zip)
 
 I downloaded these websites html code from https://www.free-css.com/free-css-templates
 Anyone wants to replicate this cloudformation can go and download these websites (and many more) from the same link.
