@@ -17,8 +17,8 @@ The rezipped websites are uploaded to a S3 bucket in the same AWS account.
 EC2 instance details:
 * Operating System: Amazon Linux 2
 * Instance Type: 
-** development instance can use t2.micro
-** production instance can use t2.micro, t2.nano, and t2.small
+* * development instance can use t2.micro
+* * production instance can use t2.micro, t2.nano, and t2.small
 
 Optimizations done:
 * This cloudformation template will work in any normal regions in AWS. The AMI to use in EC2 instance in different regions are taken from public SSM parameter.
