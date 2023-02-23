@@ -89,7 +89,7 @@ Resources:
         download-website-zipfile:
           files:
             /tmp/website.zip:
-              source: !Sub "https://${S3BucketName}.s3.${AWS::Region}.amazonaws.com/${WebsiteToHost}.zip"
+              source: !Sub "https://${S3BucketName}.s3.${S3BucketRegion}.amazonaws.com/${WebsiteToHost}.zip"
               authentication: S3Access
         configure-website:
           sources:
