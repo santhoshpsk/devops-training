@@ -8,7 +8,7 @@ steps:
 - script: |
     echo ${{ variables.var1 }} # prints initialValue
 - script: |
-    ##vso[task.setvariable variable=var1]secondValue
+    "##vso[task.setvariable variable=var1]secondValue"
 - script: |
     echo ${{ variables.var1 }} # prints initialValue
     echo $(var1) # prints secondValue
