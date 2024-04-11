@@ -1,0 +1,119 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: This is launch a EC2 instance to host a website which is actually in the S3 bucket
+
+Parameters:
+  InstanceType:
+    Type: String
+    Default: t2.micro
+    AllowedValues:
+      - t2.micro
+      - t2.nano
+      - t2.small
+  Env:
+    Type: String
+    Default: development
+    AllowedValues:
+      - development
+      - production
+  S3BucketName:
+    Type: String
+  S3BucketRegion:
+    Type: String
+    MinLength: "1"
+    Default: ap-south-1
+  WebsiteToHost:
+    Type: String
+    Default: digitalex
+    AllowedValues:
+      - digitalex
+      - foste
+      - meetup
+      - diffuso
+      - convid
+      - photofolio
+  Ec2ImageId:
+    Type: AWS::SSM::Parameter::Value<AWS::EC2::Image::Id>
+    Default: /aws/service/ami-amazon-linux-latest/al2022-ami-kernel-5.15-x86_64
+
+Rules:
+  DevInstanceTypeEnsure:
+    RuleCondition: !Equals [!Ref Env, development]
+    Assertions:
+      - Assert: !Equals [!Ref InstanceType, t2.micro]
+        AssertDescription: Dev environment can only be of instance type t2.micro
+
+Resources:
+  Ec2InstanceProfileRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: ec2.amazonaws.com
+            Action: "sts:AssumeRole"
+      Policies:
+        - PolicyName: AllowS3BucketAccess
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action:
+                  - "s3:GetObject"
+                Resource: !Sub "arn:aws:s3:::${S3BucketName}/*"
+  Ec2InstanceProfile:
+    Type: AWS::IAM::InstanceProfile
+    Properties:
+      Path: /
+      Roles:
+        - !Ref Ec2InstanceProfileRole
+  WebServerEc2Instance:
+    Type: AWS::EC2::Instance
+    Metadata:
+      AWS::CloudFormation::Init:
+        configSets:
+          default:
+            - httpd-configure
+            - download-website-zipfile
+            - configure-website
+            - permission-change
+        httpd-configure:
+          packages:
+            yum:
+              httpd: []
+          services:
+            sysvinit:
+              httpd:
+                enabled: true
+                ensureRunning: true
+        download-website-zipfile:
+          files:
+            /tmp/website.zip:
+              source: !Sub "https://${S3BucketName}.s3.${S3BucketRegion}.amazonaws.com/${WebsiteToHost}.zip"
+              authentication: S3Access
+        configure-website:
+          sources:
+            /var/www/html: "/tmp/website.zip"
+        permission-change:
+          commands:
+            permission-change:
+              command: "chmod 777 -R ./*"
+              cwd: "/var/www/"
+      AWS::CloudFormation::Authentication:
+        S3Access:
+          type: s3
+          buckets:
+            - !Ref S3BucketName
+          roleName: !Ref Ec2InstanceProfileRole
+    Properties:
+      InstanceType: !Ref InstanceType
+      ImageId: !Ref Ec2ImageId
+      KeyName: ec2-keypair
+      IamInstanceProfile: !Ref Ec2InstanceProfile
+      UserData:
+        Fn::Base64:
+          Fn::Sub: |
+            #!/bin/bash
+            sudo yum install -y aws-cfn-bootstrap
+            /opt/aws/bin/cfn-init -s ${AWS::StackName} -r WebServerEc2Instance --region=${AWS::Region}

@@ -1,0 +1,23 @@
+# code: language=yaml
+---
+- hosts: all
+  become: yes
+  vars:
+    nginx:
+      package_name:
+        Ubuntu: nginx
+        CentOS: nginx
+      service_name:
+        Ubuntu: nginx
+        CentOS: nginx
+  tasks:
+  - name: Install nginx in Ubuntu
+    package:
+      name: nginx
+      state: latest
+  
+  - name: Start and enable nginx service
+    package:
+      name: nginx
+      state: started
+      enabled: true

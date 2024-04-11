@@ -1,0 +1,48 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: 'Parameters check'
+Parameters:
+  Ec2ImageId:
+    Type: AWS::SSM::Parameter::Value<AWS::EC2::Image::Id>
+    Default: /aws/service/ami-amazon-linux-latest/al2022-ami-kernel-5.15-x86_64
+  Ec2InstanceType:
+    Type: String
+    Default: t2.micro
+    AllowedValues:
+      - t2.micro
+      - t2.nano
+
+Resources:
+  MyEc2Instance:
+    Type: AWS::EC2::Instance
+    Metadata:
+      AWS::CloudFormation::Init:
+        configSets:
+          default:
+            - yum-update
+            - httpd-install
+        httpd-install:
+          packages:
+            yum:
+              httpd: []
+          services:
+            sysvinit:
+              httpd:
+                enabled: true
+                ensureRunning: true
+        yum-update:
+          commands:
+            yum_update:
+              command: "yum update -y"
+    Properties:
+      ImageId: !Ref Ec2ImageId
+      InstanceType: !Ref Ec2InstanceType
+      KeyName: ec2-keypair
+      SecurityGroupIds:
+        - sg-0a117c4bb1be35f24
+        - sg-0e33a0029078ec587
+      UserData:
+        Fn::Base64:
+          Fn::Sub: |
+            #!/bin/bash
+            sudo yum install -y aws-cfn-bootstrap
+            /opt/aws/bin/cfn-init -s ${AWS::StackName} -r MyEc2Instance --region=${AWS::Region}
