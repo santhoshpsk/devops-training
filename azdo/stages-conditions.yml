@@ -18,7 +18,7 @@ stages:
     - script: echo B
 - stage: C
   # this makes this stage run only if B stage succeeded
-  #condition: succeeded('B')
+  condition: succeeded('A')
   jobs:
   - job: C
     steps:
