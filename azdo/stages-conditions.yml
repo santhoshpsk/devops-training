@@ -26,7 +26,8 @@ stages:
     - script: exit 1
 - stage: D
   # dependsOn and condition are interrelated i.e. condition is evaluated on the dependsOn stages.
-  dependsOn: A
+  # This stage runs only if stage A fails.
+  #dependsOn: A
   condition: failed()
   jobs:
   - job: D
