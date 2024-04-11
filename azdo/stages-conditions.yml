@@ -23,9 +23,10 @@ stages:
   - job: C
     steps:
     - script: echo C
+    - script: exit 1
 - stage: D
+  # dependsOn and condition are interrelated i.e. condition is evaluated on the dependsOn stages.
   dependsOn: A
-  # this makes this stage run only if B stage succeeded
   condition: failed()
   jobs:
   - job: D
