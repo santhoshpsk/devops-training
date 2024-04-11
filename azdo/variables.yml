@@ -1,0 +1,9 @@
+trigger: none
+
+variables:
+- name: var1
+  value: 'hello world'
+
+steps:
+- script: |
+    echo ${{ var1 }}
