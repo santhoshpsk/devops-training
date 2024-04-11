@@ -1,0 +1,27 @@
+--
+trigger:
+- master
+
+pool:
+  vmImage: ubuntu-latest
+
+stages:
+- stage: A
+  jobs:
+  - job: A
+    steps:
+    - script: echo A
+- stage: B
+  # this make this stage runs only if previous stage fails
+  condition: failed()
+  jobs:
+  - job: B
+    steps:
+    - script: echo B
+- stage: C
+  # this makes this stage run only if B stage succeeded
+  condition: succeeded('B')
+  jobs:
+  - job: C
+    steps:
+    - script: echo C
