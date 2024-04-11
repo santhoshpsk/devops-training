@@ -11,22 +11,26 @@ stages:
     steps:
     - script: echo Built the app
   - job: Test
+    # this job depends on Build job
     dependsOn: Build
     steps:
     - script: echo Testing the app
 - stage: DeployUS1
+  # This stage depends on BuildAndTest stage
   dependsOn: BuildAndTest
   jobs:
   - job: Deploy
     steps:
     - script: echo Deployed to US1 region
 - stage: DeployUS2
+  # This stage depends on BuildAndTest stage
   dependsOn: BuildAndTest
   jobs:
   - job: Deploy
     steps:
     - script: echo Deploying to US2 region
 - stage: DeployUS3
+  # dependsOn can be mentioned as list also
   dependsOn:
   - BuildAndTest
   - DeployUS1
