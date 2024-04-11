@@ -1,0 +1,10 @@
+trigger:
+  branches:
+    include:
+    - master
+  paths:
+    exclude:
+    - /README.md
+
+steps:
+- script: echo Just a test for triggers
