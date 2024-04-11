@@ -13,4 +13,3 @@ steps:
 - script: |
     echo ${{ variables.var1 }} # prints initialValue
     echo $(var1) # prints secondValue
-    echo $var1
