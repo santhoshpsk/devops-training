@@ -18,7 +18,7 @@ stages:
     - script: echo B
 - stage: C
   dependsOn: B
-  # this makes this stage run only if B stage succeeded
+  # this makes this stage run only if A stage succeeded
   condition: succeeded('A')
   jobs:
   - job: C
@@ -28,7 +28,7 @@ stages:
 - stage: D
   # dependsOn and condition are interrelated i.e. condition is evaluated on the dependsOn stages.
   # This stage runs only if stage A fails.
-  dependsOn: C
+  dependsOn: A
   condition: failed()
   jobs:
   - job: D
