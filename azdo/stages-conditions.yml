@@ -23,3 +23,11 @@ stages:
   - job: C
     steps:
     - script: echo C
+- stage: D
+  dependsOn: A
+  # this makes this stage run only if B stage succeeded
+  condition: failed()
+  jobs:
+  - job: D
+    steps:
+    - script: echo D
