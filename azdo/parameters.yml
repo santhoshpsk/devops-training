@@ -1,0 +1,14 @@
+trigger: none
+
+pool:
+  vmImage: ubuntu-latest
+
+parameters:
+- name: runAllTasks
+  type: boolean
+  displayName: Run All Tasks?
+  default: true
+
+steps:
+- script: echo Just a check
+  enabled: ${{ parameters.runAllTasks }}
