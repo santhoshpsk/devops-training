@@ -14,4 +14,4 @@ parameters:
 
 steps:
 - script: |
-    echo $(input1) hello
+    echo ${{ parameters.input1 }} hello
