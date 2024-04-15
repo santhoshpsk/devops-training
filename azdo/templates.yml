@@ -1,0 +1,13 @@
+trigger: none
+
+pool:
+  vmImage: ubuntu-latest
+
+jobs:
+- template: template-1.yml
+- template: template-1.yml
+- job: Hello
+  displayName: Hello
+  steps:
+  - script: |
+      echo Hello world

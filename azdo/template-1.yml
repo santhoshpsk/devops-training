@@ -1,0 +1,5 @@
+jobs:
+- job: InsideTemplate
+  steps:
+  - script: |
+      echo Inside template
