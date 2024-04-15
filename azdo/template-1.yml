@@ -1,5 +1,5 @@
 jobs:
-- job: InsideTemplate
+- job: InsideTemplate1
   steps:
   - script: |
-      echo Inside template
+      echo Inside template 1

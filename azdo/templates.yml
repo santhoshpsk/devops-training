@@ -5,7 +5,7 @@ pool:
 
 jobs:
 - template: template-1.yml
-- template: template-1.yml
+- template: template-2.yml
 - job: Hello
   displayName: Hello
   steps:
