@@ -5,7 +5,7 @@ pool:
 
 parameters:
 - name: input1
-  displayNName: Input 1
+  displayName: Input 1
   type: string
 - name: input2
   displayName: Input 2
