@@ -23,13 +23,13 @@ steps:
     echo var1 value is $(var1)
   displayName: var1Value
 - script: |
-    echo ##vso[task.setvariable variable=var1]${{ parameters.param1 }}
+    echo "##vso[task.setvariable variable=var1]${{ parameters.param1 }}"
   displayName: var1ValueChange
 - script: |
     echo var1 value now is $(var1)
   displayName: var1ValueAgain
 - script: |
-    echo ##vso[task.setvariable variable=var1]var1NextValue
+    echo "##vso[task.setvariable variable=var1]var1NextValue"
   displayName: var1ValueSetNext
 - script: |
     echo var1 value again now is $(var1)
