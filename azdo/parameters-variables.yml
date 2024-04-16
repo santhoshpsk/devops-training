@@ -19,7 +19,7 @@ steps:
 - script: |
     echo param2 value is ${{ parameters.param2 }}
   displayName: param2Value
-- scriipt: |
+- script: |
     echo var1 value is $(var1)
   displayName: var1Value
 - script: |
